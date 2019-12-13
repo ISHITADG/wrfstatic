@@ -44,13 +44,15 @@ RUN apt-get install mpich \
 
 # download compiled wrf parallel and compiler source code
 RUN wget -L https://github.com/ISHITADG/wrf_hydro/blob/master/wrf_hydro_NoahMP.exe?raw=true \
-    && 
+    && wget -L https://github.com/ISHITADG/wrfstatic/blob/master/WRF_Hydro3.0.tar.gz?raw=true \
+    && gunzip -c WRF_Hydro3.0.tar.gz | tar xopf - 
 
 # download domain case
-RUN wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=FILEID' -O- | sed -rn 's/.confirm=([0-9A-Za-z_]+)./\1\n/p')&id=1F2FEl-uob5XAvE5DU_u3TkFGw61iKQod" -O c4_1.tar.gz && rm -rf /tmp/cookies.txt
+RUN wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=FILEID' -O- | sed -rn 's/.confirm=([0-9A-Za-z_]+)./\1\n/p')&id=1F2FEl-uob5XAvE5DU_u3TkFGw61iKQod" -O c4_1.tar.gz && rm -rf /tmp/cookies.txt\
+    && gunzip -c c4_1.tar.gz | tar xopf - 
 
 #download rainfall, parameter info and other files
-wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=FILEID' -O- | sed -rn 's/.confirm=([0-9A-Za-z_]+)./\1\n/p')&id=1Z0PiT8dRzrk8WLv6q5PA6LavE9Aq5R6d" -O forIshita.tgz && rm -rf /tmp/cookies.txt;
-
+RUN wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=FILEID' -O- | sed -rn 's/.confirm=([0-9A-Za-z_]+)./\1\n/p')&id=1Z0PiT8dRzrk8WLv6q5PA6LavE9Aq5R6d" -O forIshita.tgz && rm -rf /tmp/cookies.txt;
+    && gunzip -c forIshita.tgz | tar xvf - 
 #see output --how to run model see later
 
