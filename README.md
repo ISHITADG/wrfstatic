@@ -5,6 +5,12 @@
 4. Hydro compiler source <br/>
 5. Compiled wrf executable <br/>
 6. working directory: contains rainfall & parameters and other executables <br/>
+## download rainfall, parameter info and other files
+wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=FILEID' -O- | sed -rn 's/.confirm=([0-9A-Za-z_]+)./\1\n/p')&id=1Z0PiT8dRzrk8WLv6q5PA6LavE9Aq5R6d" -O forIshita.tgz && rm -rf /tmp/cookies.txt;
+
 7. Domain case <br/>
-8. script that runs executable* <br/>
-9. Dockerfile that creates this container image with items 1-8
+## download domain case
+RUN wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=FILEID' -O- | sed -rn 's/.confirm=([0-9A-Za-z_]+)./\1\n/p')&id=1F2FEl-uob5XAvE5DU_u3TkFGw61iKQod" -O c4_1.tar.gz && rm -rf /tmp/cookies.txt
+
+8. script that runs executable**-to be done <br/>
+9. Dockerfile that creates this container image and install all above items 1-8
