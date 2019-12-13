@@ -2,15 +2,15 @@ FROM ubuntu:18.04
 
 #increase space and install dependencies
 RUN apt-get update \
-    && sudo apt install udisks2\
-    && sudo apt-get install tmux\
-    && sudo apt-get install htop\
+    && sudo apt install -y udisks2\
+    && sudo apt-get install -y tmux\
+    && sudo apt-get install -y htop\
     && sudo apt-get install -y gfortran\
     && sudo apt-get install -y vim\
     && sudo apt-get install -y libboost-all-dev
 
 #install netcdf
-RUN apt-get wget \
+RUN apt-get install -y wget \
     && wget -L https://github.com/ISHITADG/wrf_hydro/raw/master/netcdf-3.6.3-beta1.tar.gz \
     && tar -xvzf netcdf-3.6.3-beta1.tar.gz  \
     && cd netcdf-3.6.3-beta1 \
@@ -38,9 +38,9 @@ RUN mkdir openmi \
     && export PATH=$PATH:/home/openmi/openmpi-4.0.2:/mnt/big/openmi
 
 # install mpich
-RUN apt-get install mpich \
-    && apt-get install libswitch-perl \
-    && apt-get install m4
+RUN apt-get install -y mpich \
+    && apt-get install -y libswitch-perl \
+    && apt-get install -y m4
 
 # download compiled wrf parallel and compiler source code
 RUN wget -L https://github.com/ISHITADG/wrf_hydro/blob/master/wrf_hydro_NoahMP.exe?raw=true \
@@ -55,4 +55,8 @@ RUN wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=down
 RUN wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=FILEID' -O- | sed -rn 's/.confirm=([0-9A-Za-z_]+)./\1\n/p')&id=1Z0PiT8dRzrk8WLv6q5PA6LavE9Aq5R6d" -O forIshita.tgz && rm -rf /tmp/cookies.txt;
     && gunzip -c forIshita.tgz | tar xvf - 
 #see output --how to run model see later
+
+#entrypoint cmd
+ENTRYPOINT ["top", "-b"]
+CMD ["-c"]
 
