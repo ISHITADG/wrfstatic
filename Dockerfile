@@ -25,18 +25,6 @@ RUN apt-get install -y wget \
     && export NETCDFLIB=/opt/netcdf/3.6.3/lib \
     && cd ..
 
-# install OpenMPI
-RUN mkdir openmi \
-    && cd openmi \
-    && wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.2.tar.gz \
-    && tar -xvzf openmpi-4.0.2.tar.gz \
-    && cd openmpi-4.0.2 \
-    && ./configure --prefix=/home/openmi \
-    && make all \
-    && make install \
-    && export LD_LIBRARY_PATH=/home/openmi/openmpi-4.0.2 \
-    && export PATH=$PATH:/home/openmi/openmpi-4.0.2:/mnt/big/openmi
-
 # install mpich
 RUN apt-get install -y mpich \
     && apt-get install -y libswitch-perl \
