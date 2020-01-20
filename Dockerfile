@@ -7,6 +7,8 @@ RUN apt-get update \
     && apt-get install -y htop\
     && apt-get install -y gfortran\
     && apt-get install -y vim\
+    && apt-get install -y csh\
+    && apt-get install -y openssh-server\
     && apt-get install -y libboost-all-dev
 
 #install netcdf
@@ -15,6 +17,7 @@ RUN apt-get install -y wget \
     && tar -xvzf netcdf-3.6.3-beta1.tar.gz  \
     && cd netcdf-3.6.3-beta1 \
     && export FC=gfortran \
+    && mkdir /opt \
     && mkdir /opt/netcdf \
     && mkdir /opt/netcdf/3.6.3 \
     && ./configure --prefix=/opt/netcdf/3.6.3 \
