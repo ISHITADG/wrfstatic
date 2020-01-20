@@ -34,7 +34,7 @@ RUN apt-get install -y mpich \
     && apt-get install -y m4
 
 # download compiled wrf parallel and compiler source code
-RUN wget -L https://github.com/ISHITADG/wrf_hydro/blob/master/wrf_hydro_NoahMP.exe?raw=true \
+RUN wget -L https://github.com/ISHITADG/wrfstatic/blob/master/wrf_hydro_NoahMP.exe?raw=true \
     && mv wrf_hydro_NoahMP.exe?raw=true wrf_hydro_NoahMP.exe \
     && wget -L https://github.com/ISHITADG/wrfstatic/blob/master/WRF_Hydro3.0.tar.gz?raw=true \
     && mv WRF_Hydro3.0.tar.gz\?raw\=true WRF_Hydro3.0.tar.gz \
