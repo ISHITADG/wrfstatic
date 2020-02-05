@@ -39,6 +39,7 @@ cp ../c4_1_rt100m_acc2_test_runtime_10processors_for_Ishita/namelist.hrldas .;<b
 time /usr/bin/mpiexec --allow-run-as-root -np 4 -mca btl ^openib ./wrf_hydro_NoahMP.exe >output.txt;<br/>
 
 ## push docker
-docker login --username=ishitadg; enter password
-docker tag wrfishita ishitadg/ubuntu18
-docker push ishitadg/ubuntu18
+docker login --username=ishitadg;<br/>
+enter password: ishidock91* <br/>
+docker tag wrfishita ishitadg/ubuntu18<br/>
+docker push ishitadg/ubuntu18<br/>
