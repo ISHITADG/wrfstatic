@@ -29,14 +29,14 @@ sudo docker build -t wrfishita .;<br/>
 docker run -d --rm --name wrf1 wrfishita;<br/>
 docker exec -it wrf1 bash <br/>
 ## test run inside the container 
-mv wrf_hydro_NoahMP.exe wrkdir_rt125_forIshita_2017Jan 
-rm *.gz;
-cd wrkdir_rt125_forIshita_2017Jan/;
-rm diag*; rm -rf DOMAIN; rm *namelist*;
-cp -r ../c4_1_rt100m_acc2_test_runtime_10processors_for_Ishita/DOMAIN .;
-cp ../c4_1_rt100m_acc2_test_runtime_10processors_for_Ishita/hydro.namelist .;
-cp ../c4_1_rt100m_acc2_test_runtime_10processors_for_Ishita/namelist.hrldas .;
-time /usr/bin/mpiexec --allow-run-as-root -np 4 -mca btl ^openib ./wrf_hydro_NoahMP.exe >output.txt;
+mv wrf_hydro_NoahMP.exe ../../wrkdir_rt125_forIshita_2017Jan/ <br/>
+rm *.gz;<br/>
+cd wrkdir_rt125_forIshita_2017Jan/;<br/>
+rm diag*; rm -rf DOMAIN; rm *namelist*;<br/>
+cp -r ../c4_1_rt100m_acc2_test_runtime_10processors_for_Ishita/DOMAIN .;<br/>
+cp ../c4_1_rt100m_acc2_test_runtime_10processors_for_Ishita/hydro.namelist .;<br/>
+cp ../c4_1_rt100m_acc2_test_runtime_10processors_for_Ishita/namelist.hrldas .;<br/>
+time /usr/bin/mpiexec --allow-run-as-root -np 4 -mca btl ^openib ./wrf_hydro_NoahMP.exe >output.txt;<br/>
 
 ## push docker
 docker login --username=ishitadg; enter password
