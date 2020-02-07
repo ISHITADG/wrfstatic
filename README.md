@@ -40,6 +40,6 @@ time /usr/bin/mpiexec --allow-run-as-root -np 4 -mca btl ^openib ./wrf_hydro_Noa
 
 ## push docker
 docker login --username=ishitadg;<br/>
-enter password: ishidock91* <br/>
+enter password: Ishidock91* <br/>
 docker tag wrfishita ishitadg/ubuntu18<br/>
 docker push ishitadg/ubuntu18<br/>
