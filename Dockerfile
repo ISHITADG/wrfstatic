@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:16.04
 
 #increase space and install dependencies
 RUN apt-get update \
@@ -9,6 +9,7 @@ RUN apt-get update \
     && apt-get install -y vim\
     && apt-get install -y csh\
     && apt-get install -y openssh-server\
+    && apt-get install -y build-essential\
     && apt-get install -y libboost-all-dev
 
 #install netcdf
@@ -17,7 +18,6 @@ RUN apt-get install -y wget \
     && tar -xvzf netcdf-3.6.3-beta1.tar.gz  \
     && cd netcdf-3.6.3-beta1 \
     && export FC=gfortran \
-    && mkdir /opt \
     && mkdir /opt/netcdf \
     && mkdir /opt/netcdf/3.6.3 \
     && ./configure --prefix=/opt/netcdf/3.6.3 \
@@ -27,11 +27,11 @@ RUN apt-get install -y wget \
     && export NETCDFINC=/opt/netcdf/3.6.3/include \
     && export NETCDFLIB=/opt/netcdf/3.6.3/lib \
     && cd ..
-    
+
 # install openmpi
 RUN mkdir openmi\
     && cd openmi\
-    && wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.2.tar.gz\ 
+    && wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.2.tar.gz\
     && tar -xvzf openmpi-4.0.2.tar.gz\
     && cd openmpi-4.0.2 \
     && ./configure --prefix=/mnt/big/openmi\
@@ -40,7 +40,7 @@ RUN mkdir openmi\
     && export LD_LIBRARY_PATH=/mnt/big/openmi/openmpi-4.0.2 \
     && export PATH=$PATH:/mnt/big/openmi/openmpi-4.0.2:/mnt/big/openmi \
     && cd ../..
-    
+
 # install mpich
 RUN apt-get install -y mpich \
     && apt-get install -y libswitch-perl \
@@ -61,7 +61,8 @@ RUN wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=down
 RUN wget --no-check-certificate -r 'https://docs.google.com/uc?export=download&id=1G3ZGbzaQFlpD1JRhk1W7-WBtoGxLSRXe' -O wrkdir_rt125_forIshita_2017Jan.zip\
     && apt-get install -y unzip \
     && unzip wrkdir_rt125_forIshita_2017Jan.zip \
-    && rm *.gz; rm *.zip
+    && rm *.gz \
+    && rm *.zip
 
 #see output --how to run model see later
 
