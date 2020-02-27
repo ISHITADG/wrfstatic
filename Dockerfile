@@ -69,8 +69,8 @@ RUN wget -L https://github.com/Unidata/netcdf-c/archive/v4.4.1.1.tar.gz\
     && NCDIR=/usr/local \
     && CPPFLAGS='-I${H5DIR}/include -I${ZDIR}/include' LDFLAGS='-L${H5DIR}/lib -L${ZDIR}/lib'\
     && ./configure --prefix=${NCDIR}\
-    && make check
-    && make install
+    && make check\
+    && make install\
     && export LD_LIBRARY_PATH=${NCDIR}/lib:${LD_LIBRARY_PATH}\
     && cd ../cd netcdf-fortran-4.4.4\
     && NFDIR=/usr/local \
