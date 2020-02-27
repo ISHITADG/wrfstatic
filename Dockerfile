@@ -10,59 +10,99 @@ RUN apt-get update \
     && apt-get install -y csh\
     && apt-get install -y openssh-server\
     && apt-get install -y build-essential\
+    && apt-get install -y wget\
+    && apt-get install -y unzip\
     && apt-get install -y libboost-all-dev
-
-#install netcdf
-RUN apt-get install -y wget \
-    && wget -L https://github.com/ISHITADG/wrf_hydro/raw/master/netcdf-3.6.3-beta1.tar.gz \
-    && tar -xvzf netcdf-3.6.3-beta1.tar.gz  \
-    && cd netcdf-3.6.3-beta1 \
-    && export FC=gfortran \
-    && mkdir /opt/netcdf \
-    && mkdir /opt/netcdf/3.6.3 \
-    && ./configure --prefix=/opt/netcdf/3.6.3 \
-    && make \
-    && make install \
-    && export NETCDFHOME=/opt/netcdf/3.6.3 \
-    && export NETCDFINC=/opt/netcdf/3.6.3/include \
-    && export NETCDFLIB=/opt/netcdf/3.6.3/lib \
-    && cd ..
-
+    
+# install mpich
+RUN mkdir mpich-install\
+    && cd mpich-install\
+    && wget -L http://www.mpich.org/static/downloads/3.3.2/mpich-3.3.2.tar.gz \
+    && tar xzf mpich-3.3.2.tar.gz \
+    && cd mpich-3.3.2 \
+    && mkdir mpich-install\
+    && ./configure --prefix=/home/mpich-install 2>&1 | tee c.txt\
+    && make 2>&1 | tee m.txt\
+    && make install 2>&1 | tee mi.txt\
+    && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/mpich-install/bin \
+    && export PATH=$PATH:/home/mpich-install/bin \
+    && cd ../..
+    
 # install openmpi
 RUN mkdir openmi\
     && cd openmi\
     && wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.2.tar.gz\
     && tar -xvzf openmpi-4.0.2.tar.gz\
     && cd openmpi-4.0.2 \
-    && ./configure --prefix=/mnt/big/openmi\
+    && ./configure --prefix=/home/openmi\
     && make all\
     && make install \
-    && export LD_LIBRARY_PATH=/mnt/big/openmi/openmpi-4.0.2 \
-    && export PATH=$PATH:/mnt/big/openmi/openmpi-4.0.2:/mnt/big/openmi \
+    && export LD_LIBRARY_PATH=/home/openmi/openmpi-4.0.2 \
+    && export PATH=$PATH:/home/openmi/openmpi-4.0.2 \
     && cd ../..
+    
+#install zlib,hdf5,netcdf-c4.4,nectdf-fortran4
+RUN wget -L https://github.com/Unidata/netcdf-c/archive/v4.4.1.1.tar.gz\
+    && tar -xvzf v4.4.1.1.tar.gz \
+    && wget -L https://github.com/Unidata/netcdf-fortran/archive/v4.4.4.tar.gz\
+    && tar -xvzf v4.4.4.tar.gz\
+    && wget -L ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4/hdf5-1.8.13.tar.gz\
+    && tar -xvzf hdf5-1.8.13.tar.gz\
+    && wget -L ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4/zlib-1.2.8.tar.gz\
+    && tar -xvzf zlib-1.2.8.tar.gz\
+    && rm *.tar.gz\
+    && export F77=gfortran\
+    && export FC=gfortran\
+    && export CC=gcc\
+    && export CXX=g++\
+    && export CFLAGS=-fPIC\
+    && cd ../zlib-1.2.8\
+    && ZDIR=/usr/local\
+    && ./configure --prefix=${ZDIR}\
+    && make check\
+    && make install\
+    && cd ../hdf5-1.8.13\
+    && ./configure --with-zlib=${ZDIR} --prefix=${H5DIR} --enable-hl\
+    && make check\
+    && make install\
+    && cd ../cd netcdf-c-4.4.1.1\
+    && NCDIR=/usr/local \
+    && CPPFLAGS='-I${H5DIR}/include -I${ZDIR}/include' LDFLAGS='-L${H5DIR}/lib -L${ZDIR}/lib'\
+    && ./configure --prefix=${NCDIR}\
+    && make check
+    && make install
+    && export LD_LIBRARY_PATH=${NCDIR}/lib:${LD_LIBRARY_PATH}\
+    && cd ../cd netcdf-fortran-4.4.4\
+    && NFDIR=/usr/local \
+    && export LD_LIBRARY_PATH=${NFDIR}/lib:${LD_LIBRARY_PATH}\
+    && CPPFLAGS='-I${H5DIR}/include -I${ZDIR}/include' LDFLAGS='-L${H5DIR}/lib -L${ZDIR}/lib'\
+    && ./configure --prefix=${NFDIR}\
+    && make check\
+    && make install\
+    && cd ..
 
-# install mpich
-RUN apt-get install -y mpich \
-    && apt-get install -y libswitch-perl \
-    && apt-get install -y m4
+# configure & compile gfort wrf-hydro
+RUN wget -L https://github.com/NCAR/wrf_hydro_nwm_public/archive/v5.1.1.tar.gz\
+    && tar -xvzf v5.1.1.tar.gz\
+    && rm v5.1.1.tar.gz\
+    && cd wrf_hydro_nwm_public-5.1.1/trunk/NDHMS \
+    && cp template/setEnvar.sh .\
+    && export NETCDF=`nc-config --prefix`\
+    && export NETCDF_INC="/usr/local/include"\
+    && export NETCDF_LIB="/usr/local/lib"\
+    && ./configure 2\
+    && wget -L https://raw.githubusercontent.com/ISHITADG/wrfstatic/master/setEnvar.sh\
+    && ./compile_offline_NoahMP.sh setEnvar.sh \
+    && cd ../../..
 
-# download compiled wrf parallel and compiler source code
-RUN wget -L https://github.com/ISHITADG/wrfstatic/blob/master/wrf_hydro_NoahMP.exe?raw=true \
-    && mv wrf_hydro_NoahMP.exe?raw=true wrf_hydro_NoahMP.exe \
-    && wget -L https://github.com/ISHITADG/wrfstatic/blob/master/WRF_Hydro3.0.tar.gz?raw=true \
-    && mv WRF_Hydro3.0.tar.gz\?raw\=true WRF_Hydro3.0.tar.gz \
-    && gunzip -c WRF_Hydro3.0.tar.gz | tar xopf -
-
-# download a domain case
-RUN wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1F2FEl-uob5XAvE5DU_u3TkFGw61iKQod' -O- | sed -rn 's/.confirm=([0-9A-Za-z_]+)./\1\n/p')&id=1F2FEl-uob5XAvE5DU_u3TkFGw61iKQod" -O c4_1.tar.gz && rm -rf /tmp/cookies.txt\
-    && gunzip -c c4_1.tar.gz | tar xopf -
-
-#download rainfall, parameter info and other files
-RUN wget --no-check-certificate -r 'https://docs.google.com/uc?export=download&id=1G3ZGbzaQFlpD1JRhk1W7-WBtoGxLSRXe' -O wrkdir_rt125_forIshita_2017Jan.zip\
-    && apt-get install -y unzip \
-    && unzip wrkdir_rt125_forIshita_2017Jan.zip \
-    && rm *.gz \
-    && rm *.zip
+# Run a test case
+RUN wget -L https://github.com/NCAR/wrf_hydro_nwm_public/releases/download/v5.1.1/croton_NY_example_testcase.tar.gz\
+    && tar -xvzf croton_NY_example_testcase.tar.gz\
+    && rm croton_NY_example_testcase.tar.gz\
+    && cd example_case/NWM \
+    && cp ../../wrf_hydro_nwm_public-5.1.1/trunk/NDHMS/Run/*.TBL .\
+    && cp ../../wrf_hydro_nwm_public-5.1.1/trunk/NDHMS/Run/wrf_hydro_NoahMP.exe .\
+    && cp -r ../FORCING .
 
 #see output --how to run model see later
 
