@@ -12,6 +12,7 @@ RUN apt-get update \
     && apt-get install -y build-essential\
     && apt-get install -y wget\
     && apt-get install -y unzip\
+    && apt-get install -y m4\
     && apt-get install -y libboost-all-dev
     
 # install mpich
@@ -56,7 +57,7 @@ RUN wget -L https://github.com/Unidata/netcdf-c/archive/v4.4.1.1.tar.gz\
     && export CC=gcc\
     && export CXX=g++\
     && export CFLAGS=-fPIC\
-    && cd ../zlib-1.2.8 \
+    && cd zlib-1.2.8 \
     && ZDIR=/usr/local \
     && ./configure --prefix=${ZDIR}\
     && make check \
@@ -66,14 +67,14 @@ RUN wget -L https://github.com/Unidata/netcdf-c/archive/v4.4.1.1.tar.gz\
     && ./configure --with-zlib=${ZDIR} --prefix=${H5DIR} --enable-hl \
     && make check \
     && make install \
-    && cd ../cd netcdf-c-4.4.1.1\
+    && cd ../netcdf-c-4.4.1.1\
     && NCDIR=/usr/local \
     && CPPFLAGS='-I${H5DIR}/include -I${ZDIR}/include' LDFLAGS='-L${H5DIR}/lib -L${ZDIR}/lib'\
     && ./configure --prefix=${NCDIR}\
     && make check\
     && make install\
     && export LD_LIBRARY_PATH=${NCDIR}/lib:${LD_LIBRARY_PATH}\
-    && cd ../cd netcdf-fortran-4.4.4\
+    && cd ../netcdf-fortran-4.4.4\
     && NFDIR=/usr/local \
     && export LD_LIBRARY_PATH=${NFDIR}/lib:${LD_LIBRARY_PATH}\
     && CPPFLAGS='-I${H5DIR}/include -I${ZDIR}/include' LDFLAGS='-L${H5DIR}/lib -L${ZDIR}/lib'\
@@ -91,6 +92,8 @@ RUN wget -L https://github.com/NCAR/wrf_hydro_nwm_public/archive/v5.1.1.tar.gz\
     && export NETCDF=`nc-config --prefix`\
     && export NETCDF_INC="/usr/local/include"\
     && export NETCDF_LIB="/usr/local/lib"\
+    && export PATH=$PATH:/mpich-install/bin\
+    && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/mpich-install/bin:/usr/local/lib \
     && ./configure 2\
     && ./compile_offline_NoahMP.sh setEnvar.sh \
     && cd ../../..
@@ -102,9 +105,10 @@ RUN wget -L https://github.com/NCAR/wrf_hydro_nwm_public/releases/download/v5.1.
     && cd example_case/NWM \
     && cp ../../wrf_hydro_nwm_public-5.1.1/trunk/NDHMS/Run/*.TBL .\
     && cp ../../wrf_hydro_nwm_public-5.1.1/trunk/NDHMS/Run/wrf_hydro_NoahMP.exe .\
-    && cp -r ../FORCING .
+    && cp -r ../FORCING .\
+    && mpirun --allow-run-as-root -np 2 ./wrf_hydro_NoahMP.exe
 
-#see output --how to run model see later
+#output in /example_case/NWM directory
 
 #entrypoint cmd
 ENTRYPOINT ["top", "-b"]
