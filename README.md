@@ -3,7 +3,7 @@
 3. Mpich to be installed from http://www.mpich.org/static/downloads/3.3.2/mpich-3.3.2.tar.gz (ZIP file too large to be icluded in here )<br/>
 4. wrfHydro v5 model source <br/>
 5. Compiled wrf executable <br/>
-6. Test case: wget -L https://github.com/NCAR/wrf_hydro_nwm_public/releases/download/v5.1.1/croton_NY_example_testcase.tar.gz; <br/>
+6. Test case including rainfall, domain files, parameters: run.tar.gz <br/>
 7. script that runs executable**-to be done <br/>
 9. Dockerfile that creates this container image and install all above items 1-8 <br/>
 
