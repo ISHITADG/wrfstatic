@@ -22,5 +22,5 @@ mpirun -np 2 ./wrf_hydro_NoahMP.exe <br/>
 ## push docker
 docker login --username=ishitadg;<br/>
 enter password: Ishidock91* <br/>
-docker tag wrfishita ishitadg/ubuntu18<br/>
-docker push ishitadg/ubuntu18<br/>
+docker tag wrfishita ishitadg/wrfhv5<br/>
+docker push ishitadg/wrfhv5<br/>
