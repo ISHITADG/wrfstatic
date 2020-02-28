@@ -4,8 +4,8 @@
 4. wrfHydro v5 model source <br/>
 5. Compiled wrf executable <br/>
 6. Test case including rainfall, domain files, parameters: run.tar.gz <br/>
-7. script that runs executable**-to be done <br/>
-9. Dockerfile that creates this container image and install all above items 1-8 <br/>
+7. Dockerfile that creates this container image and install all above items 1-5 <br/>
+8. script that runs executable (?)**-to be done <br/> 
 
 ## steps to create container from the above Dockerfile
 sudo wget https://raw.githubusercontent.com/ISHITADG/dockerNDN/master/dockovs.sh;<br/>
