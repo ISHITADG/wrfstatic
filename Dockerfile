@@ -67,7 +67,7 @@ RUN wget -L https://github.com/Unidata/netcdf-c/archive/v4.4.1.1.tar.gz\
     && ./configure --with-zlib=${ZDIR} --prefix=${H5DIR} --enable-hl \
     && make check \
     && make install \
-    && cd ../netcdf-c-4.4.1.1\
+    && cd ../netcdf-c-4.4.1.1 \
     && NCDIR=/usr/local \
     && CPPFLAGS='-I${H5DIR}/include -I${ZDIR}/include' LDFLAGS='-L${H5DIR}/lib -L${ZDIR}/lib'\
     && ./configure --prefix=${NCDIR}\
