@@ -24,3 +24,12 @@ docker login --username=ishitadg;<br/>
 enter password: Ishidock91* <br/>
 docker tag wrfishita ishitadg/wrfhv5<br/>
 docker push ishitadg/wrfhv5<br/>
+
+## make changes to docker container and modify image
+### TO PUSH
+docker commit wrf1 ishitadg/wrfhv5<br/>
+docker push ishitadg/wrfhv5<br/>
+docker images<br/>
+### TO PULL
+docker pull ishitadg/wrfhv5<br/>
+docker run -d --rm --name wrf3 ishitadg/wrfhv5<br/>
