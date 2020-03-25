@@ -33,3 +33,8 @@ docker images<br/>
 ### TO PULL
 docker pull ishitadg/wrfhv5<br/>
 docker run -d --rm --name wrf3 ishitadg/wrfhv5<br/>
+wget -L https://github.com/ISHITADG/wrfstatic/blob/master/FORCING.tar.gz?raw=true <br/>
+mv FORCING.tar.gz?raw=true FORCING.tar.gz<br/>
+tar -xvzf FORCING.tar.gz<br/>
+wget -L https://raw.githubusercontent.com/ISHITADG/wrfstatic/master/hydro.namelist<br/>
+wget -L https://raw.githubusercontent.com/ISHITADG/wrfstatic/master/namelist.hrldas<br/>
