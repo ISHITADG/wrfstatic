@@ -14,7 +14,7 @@ wget -L https://raw.githubusercontent.com/ISHITADG/wrfstatic/master/Dockerfile; 
 sudo docker build -t wrfishita .;<br/>
 docker run -d --rm --name wrf1 wrfishita;<br/>
 docker exec -it wrf1 bash <br/>
-## test run inside the container 
+## *FOR GEORGE* test run inside the container 
 cd /example_case/NWM/<br/>
 mpirun -np 2 ./wrf_hydro_NoahMP.exe <br/>
 // time /usr/bin/mpiexec --allow-run-as-root -np 4 -mca btl ^openib ./wrf_hydro_NoahMP.exe >output.txt;<br/>
