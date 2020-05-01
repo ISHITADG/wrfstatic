@@ -12,8 +12,8 @@ sudo wget https://raw.githubusercontent.com/ISHITADG/dockerNDN/master/dockovs.sh
 bash dockovs.sh;<br/>
 wget -L https://raw.githubusercontent.com/ISHITADG/wrfstatic/master/Dockerfile; <br/>
 sudo docker build -t wrfishita .;<br/>
-docker run -d --rm --name wrf1 wrfishita;<br/>
-docker exec -it wrf1 bash <br/>
+docker run -it --rm --name wrf1 wrfishita:latest;<br/>
+
 ## *FOR GEORGE* test run inside the container 
 cd /example_case/NWM/<br/>
 mpirun -np 2 ./wrf_hydro_NoahMP.exe <br/>
