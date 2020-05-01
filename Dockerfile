@@ -103,10 +103,3 @@ RUN wget -L https://github.com/NCAR/wrf_hydro_nwm_public/releases/download/v5.1.
     && cp ../../wrf_hydro_nwm_public-5.1.1/trunk/NDHMS/Run/wrf_hydro_NoahMP.exe .\
     && cp -r ../FORCING .\
     && mpirun --allow-run-as-root -np 2 ./wrf_hydro_NoahMP.exe
-
-#output in /example_case/NWM directory
-
-#entrypoint cmd
-ENTRYPOINT ["top", "-b"]
-CMD ["-c"]
-
