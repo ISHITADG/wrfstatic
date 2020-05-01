@@ -69,12 +69,10 @@ RUN wget -L https://github.com/Unidata/netcdf-c/archive/v4.4.1.1.tar.gz\
     && make install \
     && cd ../hdf5-1.8.13 \
     && ./configure --with-zlib=${ZDIR} --prefix=${H5DIR} --enable-hl \
-    && make check \
     && make install \
     && cd ../netcdf-c-4.4.1.1 \
     && CPPFLAGS='-I${H5DIR}/include -I${ZDIR}/include' LDFLAGS='-L${H5DIR}/lib -L${ZDIR}/lib'\
     && ./configure --prefix=${NCDIR}\
-    && make check\
     && make install\
     && cd ../netcdf-fortran-4.4.4\
     && CPPFLAGS='-I${H5DIR}/include -I${ZDIR}/include' LDFLAGS='-L${H5DIR}/lib -L${ZDIR}/lib'\
@@ -102,4 +100,4 @@ RUN wget -L https://github.com/NCAR/wrf_hydro_nwm_public/releases/download/v5.1.
     && cp ../../wrf_hydro_nwm_public-5.1.1/trunk/NDHMS/Run/*.TBL .\
     && cp ../../wrf_hydro_nwm_public-5.1.1/trunk/NDHMS/Run/wrf_hydro_NoahMP.exe .\
     && cp -r ../FORCING .\
-    && mpirun --allow-run-as-root -np 2 ./wrf_hydro_NoahMP.exe
+    && mpirun -np 2 ./wrf_hydro_NoahMP.exe
