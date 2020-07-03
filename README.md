@@ -31,6 +31,10 @@ docker commit wrf1 ishitadg/wrfhv5<br/>
 docker push ishitadg/wrfhv5<br/>
 docker images<br/>
 ### TO PULL
+#### LATEST ubuntu version
+docker pull ishitadg/wrfh20; <br/>
+docker run -it --rm --name wrf1 ishitadg/wrfh20<br/>
+
 docker pull ishitadg/wrfhv5<br/>
 docker run -d --rm --name wrf3 ishitadg/wrfhv5<br/>
 wget -L https://github.com/ISHITADG/wrfstatic/blob/master/FORCING.tar.gz?raw=true <br/>
